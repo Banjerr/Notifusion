@@ -1,0 +1,30 @@
+{
+  "name": "notifusion",
+  "version": "0.0.1",
+  "description": "Provides some cool, useful Infusionsoft abilities to your desktop environment",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Banjerr/Notifusion.git"
+  },
+  "keywords": [
+    "Infusionsoft",
+    "notification",
+    "CRM"
+  ],
+  "author": "Ben Redden",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Banjerr/issues"
+  },
+  "homepage": "http://countryfriedcoders.me",
+  "devDependencies": {
+    "electron-prebuilt": "^0.37.0"
+  },
+  "dependencies": {
+    "lowdb": "^0.12.5"
+  }
+}
