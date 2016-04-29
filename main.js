@@ -1,7 +1,6 @@
 'use strict';
 
 const electron = require('electron');
-// const jquery = require('jQuery');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -12,24 +11,23 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
 
 var options = {
-    client_id: 'wx254',
-    client_secret: '7d6e8fad2b9523d5f2e0e3c052eef43da9a67877f5ad77e4d69931fd3bc836ac',
-    redirect_uri: "https://notifusion.xyz",  // ficticious url to intercept for access_token
+    client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
+    redirect_uri: "https://localhost/main.js",
     response_type: 'code'
 };
 var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
-var authUrl = isUrl + 'client_id=' + options.client_id + '&client_secret=' + options.client_secret + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
+var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
 
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, 'node-integration':false });
+  mainWindow = new BrowserWindow({width: 800, height: 600, 'nodeIntegration':false });
 
   mainWindow.$ = require('jQuery');
   mainWindow.jQuery = require('jQuery');
 
   // and load the index.html of the app.
-  mainWindow.loadUrl(authUrl);
+  mainWindow.loadURL(authUrl);
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -83,8 +81,7 @@ app.on('activate', function () {
     // If there is a code, proceed to get token from IS
     if (code) {
       //self.requestGithubToken(options, code);
-      // console.log(jQuery(code))
-
+      console.log(code);
     } else if (error) {
       alert('Oops! Something went wrong and we couldn\'t' +
         'log you into Infusionsoft. Please try again.');
