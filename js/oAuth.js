@@ -120,7 +120,7 @@ function handleCallback (url)
             {
                 console.log(body)
                 db('access_token').push({
-                    access_token: body 
+                    access_token: body
                 });
             }
 
