@@ -25,6 +25,7 @@
     "electron-prebuilt": "^0.37.0"
   },
   "dependencies": {
-    "lowdb": "^0.12.5"
+    "lowdb": "^0.12.5",
+    "simple-oauth2": "^0.7.0"
   }
 }
