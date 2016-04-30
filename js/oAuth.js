@@ -10,7 +10,7 @@
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // oAuth stuff \\
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\
-
+// IS stuff
 var options =
 {
     client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
@@ -22,13 +22,21 @@ var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
 var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
 
 const electron = require('electron');
+
 // Module to control application life.
 const app = electron.app;
-// Module to create native browser window.
+
+// Modules to create native browser window.
 var remote = require('remote');
 var BrowserWindow = remote.require('browser-window');
+
 // need this to build the post string for the access_token
 var request = require('request');
+
+// this is db stuff
+const low = require('lowdb');
+const storage = require('lowdb/file-sync');
+const db = low('db.json', { storage });
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -111,6 +119,9 @@ function handleCallback (url)
             if (!error && response.statusCode == 200)
             {
                 console.log(body)
+                db('access_token').push({
+                    access_token: body 
+                });
             }
 
             if (error)
