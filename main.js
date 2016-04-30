@@ -5,22 +5,23 @@ const electron = require('electron');
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-// need this to build the post string for the access_token
-var request = require('request');
+// // need this to build the post string for the access_token
+// var request = require('request');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-var options =
-{
-    client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
-    redirect_uri: "https://localhost/notifusion/index.html",
-    response_type: 'code',
-    client_secret: 'ReFbmkmPWq'
-};
-var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
-var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
+// var options =
+// {
+//     client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
+//     redirect_uri: "https://localhost/notifusion/index.html",
+//     response_type: 'code',
+//     client_secret: 'ReFbmkmPWq'
+// };
+// var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
+// var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
+
 
 function createWindow ()
 {
@@ -29,91 +30,90 @@ function createWindow ()
         width: 960,
         height: 960,
         'webPreferences': {
-          'nodeIntegration': false,
+          'nodeIntegration': true,
           'webSecurity': false
         }
     });
 
-    // require jQuery
-    mainWindow.$ = require('jQuery');
-    mainWindow.jQuery = require('jQuery');
+    // // require jQuery
+    // mainWindow.$ = require('jQuery');
+    // mainWindow.jQuery = require('jQuery');
 
     // and load the index.html of the app.
-    // mainWindow.loadURL('file://' + __dirname + '/index.html');
-    mainWindow.loadURL(authUrl);
+    mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
-    // listen for the access token
-    mainWindow.webContents.on('did-get-redirect-request', function (event, arg)
-    {
-      console.log(event);
-      console.log(arg);
-    });
-
-    function handleCallback (url)
-    {
-      var raw_code = /code=([^&]*)/.exec(url) || null;
-      var code = (raw_code && raw_code.length > 1) ? raw_code[1] : null;
-      var error = /\?error=(.+)$/.exec(url);
-
-      if (code || error) {
-          // Close the browser if code found or error
-          console.log('code or error');
-          //authWindow.destroy();
-      }
-
-      // If there is a code, proceed to get token from IS
-      if (code) {
-          console.log(code);
-          console.log(options.client_id);
-          console.log('get an access token, ya big dummy!');
-
-        // send a post to request the access_token
-        request.post(
-            'https://api.infusionsoft.com/token',
-            { form: {
-                    client_id: options.client_id,
-                    client_secret: options.client_secret,
-                    code: code,
-                    grant_type: 'authorization_code',
-                    redirect_uri: options.redirect_uri
-                }
-            },
-            function (error, response, body)
-            {
-                if (!error && response.statusCode == 200)
-                {
-                    console.log(body)
-                }
-
-                if (error)
-                {
-                    console.log('somethin goofed');
-                    console.log(error);
-                }
-
-            }
-        );
-
-      }
-      else if (error)
-      {
-          alert('Oops! Something went wrong and we couldn\'t' +
-          'log you into Infusionsoft. Please try again.');
-      }
-    }
-
-    mainWindow.webContents.on('will-navigate', function (event, url)
-    {
-      handleCallback(url);
-    });
-
-    mainWindow.webContents.on('did-get-redirect-request', function (event, url)
-    {
-      handleCallback(url);
-    });
+    // // listen for the access token
+    // mainWindow.webContents.on('did-get-redirect-request', function (event, arg)
+    // {
+    //   console.log(event);
+    //   console.log(arg);
+    // });
+    //
+    // function handleCallback (url)
+    // {
+    //   var raw_code = /code=([^&]*)/.exec(url) || null;
+    //   var code = (raw_code && raw_code.length > 1) ? raw_code[1] : null;
+    //   var error = /\?error=(.+)$/.exec(url);
+    //
+    //   if (code || error) {
+    //       // Close the browser if code found or error
+    //       console.log('code or error');
+    //       //authWindow.destroy();
+    //   }
+    //
+    //   // If there is a code, proceed to get token from IS
+    //   if (code) {
+    //       console.log(code);
+    //       console.log(options.client_id);
+    //       console.log('get an access token, ya big dummy!');
+    //
+    //     // send a post to request the access_token
+    //     request.post(
+    //         'https://api.infusionsoft.com/token',
+    //         { form: {
+    //                 client_id: options.client_id,
+    //                 client_secret: options.client_secret,
+    //                 code: code,
+    //                 grant_type: 'authorization_code',
+    //                 redirect_uri: options.redirect_uri
+    //             }
+    //         },
+    //         function (error, response, body)
+    //         {
+    //             if (!error && response.statusCode == 200)
+    //             {
+    //                 console.log(body)
+    //             }
+    //
+    //             if (error)
+    //             {
+    //                 console.log('somethin goofed');
+    //                 console.log(error);
+    //             }
+    //
+    //         }
+    //     );
+    //
+    //   }
+    //   else if (error)
+    //   {
+    //       alert('Oops! Something went wrong and we couldn\'t' +
+    //       'log you into Infusionsoft. Please try again.');
+    //   }
+    // }
+    //
+    // mainWindow.webContents.on('will-navigate', function (event, url)
+    // {
+    //   handleCallback(url);
+    // });
+    //
+    // mainWindow.webContents.on('did-get-redirect-request', function (event, url)
+    // {
+    //   handleCallback(url);
+    // });
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function()
@@ -154,9 +154,15 @@ app.on('activate', function ()
   }, false);
 });
 
-//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    // oAuth stuff \\
-//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\
+// //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//     // oAuth stuff \\
+// //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\
+//
+// var ipc = require("electron").ipcMain;
+//
+// ipc.on('request-is-token', function () {
+//     app.on('ready', oAuthTokenRequest);
+// });
 //
 // function oAuthTokenRequest()
 // {
