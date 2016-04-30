@@ -75,7 +75,8 @@ function createWindow ()
                     client_secret: options.redirect_uri,
                     code: code,
                     grant_type: 'authorization_code',
-                    redirect_uri: 'http://localhost/notifusion/index.html'
+                    //r/edirect_uri: 'http://localhost/notifusion/index.html'
+                    redirect_uri: 'http://' + __dirname + '/index.html'
                 }
             },
             function (error, response, body)
