@@ -1,15 +1,9 @@
 'use strict';
 
-// var ipc = require("electron").ipcMain;
-//
-// var authBtn = document.querySelector('.authorizeIt');
-// authBtn.addEventListener('click', function () {
-//     ipc.send('request-is-token');
-// });
-
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // oAuth stuff \\
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\
+
 // IS stuff
 var options =
 {
