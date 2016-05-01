@@ -43,7 +43,7 @@ function oAuthTokenRequest()
         width: 960,
         height: 960,
         'webPreferences': {
-          'nodeIntegration': true,
+          'nodeIntegration': false,
           'webSecurity': false
         }
     });
@@ -52,13 +52,12 @@ function oAuthTokenRequest()
     var options =
     {
         client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
-        redirect_uri: "http://localhost/notifusion/index.html",
+        redirect_uri: "https://localhost/notifusion/index.html",
         response_type: 'code',
         client_secret: 'ReFbmkmPWq'
     };
     var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
     var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
-
 
     // listen for the access token
     authWindow.webContents.on('did-get-redirect-request', function (event, arg)
@@ -113,35 +112,10 @@ function handleCallback (url)
         {
             if (!error && response.statusCode == 200)
             {
-               var json = body;
-               var parsed = JSON.parse(json);
-
-               var date = new Date();
-               var expires_at = (date + 86400) / 1000; // this is wrong
-
-               var timestamp = ({
-                 year: date.getFullYear(),
-                 month: date.getMonth()+1,
-                 day : date.getDate(),
-                 time: date.toTimeString().split(' ')[0],
-                 minute: date.getMinutes(),
-                 second: date.getSeconds()
-
-               })
-               console.log(timestamp);
-
-               // TODO validate / sanatize information before push
-               db('access_token').push({
-                   access_token: parsed.access_token,
-                   token_type: parsed.token_type,
-                   refresh_token: parsed.refresh_token,
-                   expires_in: parsed.expires_in,
-                  //  expaires_at: expires_at,
-                   created: timestamp,
-                   hasExpired: false
-               });
-
-               console.log(db('access_token').__wrapper__[0].refresh_token);
+                console.log(body)
+                db('access_token').push({
+                    access_token: body
+                });
             }
 
             if (error)
