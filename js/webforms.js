@@ -61,7 +61,7 @@ function get_webforms()
 
                 console.log(response);
             }
-    );
+    });
 
     // send a post request to the webform endpoint
     // request.get(
