@@ -37,7 +37,7 @@ function get_webforms()
     // request(options, callback);
 
     request.post({
-        url: 'http://infusionrest.dev/public/webforms/',
+        url: 'http://infusionrest.countryfriedcoders.me/webforms/',
             form: {
                 'access_token': token_json.access_token,
                 'token_type': token_json.token_type,
@@ -59,9 +59,9 @@ function get_webforms()
                     console.log(error);
                 }
 
-                console.log(response);
+                console.log(response.body);
             }
-    });
+    );
 
     // send a post request to the webform endpoint
     // request.get(
