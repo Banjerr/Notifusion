@@ -112,10 +112,35 @@ function handleCallback (url)
         {
             if (!error && response.statusCode == 200)
             {
-                console.log(body)
-                db('access_token').push({
-                    access_token: body
-                });
+                var json = body;
+               var parsed = JSON.parse(json);
+
+               var date = new Date();
+               var expires_at = (date + 86400) / 1000; // this is wrong
+
+               var timestamp = ({
+                 year: date.getFullYear(),
+                 month: date.getMonth()+1,
+                 day : date.getDate(),
+                 time: date.toTimeString().split(' ')[0],
+                 minute: date.getMinutes(),
+                 second: date.getSeconds()
+
+               })
+               console.log(timestamp);
+
+               // TODO validate / sanatize information before push
+               db('access_token').push({
+                   access_token: parsed.access_token,
+                   token_type: parsed.token_type,
+                   refresh_token: parsed.refresh_token,
+                   expires_in: parsed.expires_in,
+                  //  expaires_at: expires_at,
+                   created: timestamp,
+                   hasExpired: false
+               });
+
+               console.log(db('access_token').__wrapper__[0].refresh_token);
             }
 
             if (error)
