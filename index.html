@@ -7,10 +7,22 @@
     <link rel="stylesheet" href="assets/styles/style.css">
   </head>
   <body>
-    <h1>Notifusion</h1>
-    <button onclick="oAuthTokenRequest();">Authorize</button>
+    <header>
+        <h1 class="title"><span>Noti</span>fusion</h1>
+    </header>
+
+    <article class="authorizeMe">
+        <button class="hvr-radial-in" onclick="oAuthTokenRequest();">Authorize</button>
+    </article>
+
+    <article class="retrieveWebforms">
+        <button class="hvr-radial-in" onclick="get_webforms();">Retrieve Webforms</button>
+    </article>
+
     <footer>
         <script src="js/oAuth.js"></script>
+        <script src="js/webforms.js"></script>
+        <script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
     </footer>
   </body>
 </html>

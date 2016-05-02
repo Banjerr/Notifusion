@@ -35,9 +35,9 @@ function createWindow ()
         }
     });
 
-    // // require jQuery
-    // mainWindow.$ = require('jQuery');
-    // mainWindow.jQuery = require('jQuery');
+    // require jQuery
+    mainWindow.$ = require('jQuery');
+    mainWindow.jQuery = require('jQuery');
 
     // and load the index.html of the app.
     mainWindow.loadURL('file://' + __dirname + '/index.html');
