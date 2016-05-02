@@ -135,12 +135,12 @@ function handleCallback (url)
                    token_type: parsed.token_type,
                    refresh_token: parsed.refresh_token,
                    expires_in: parsed.expires_in,
-                  //  expaires_at: expires_at,
+                   scope: parsed.scope,
                    created: timestamp,
                    hasExpired: false
                });
 
-               console.log(db('access_token').__wrapper__[0].refresh_token);
+               console.log(db('access_token').__wrapped__[0].refresh_token);
             }
 
             if (error)
