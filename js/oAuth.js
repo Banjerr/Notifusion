@@ -4,17 +4,6 @@
     // oAuth stuff \\
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\
 
-// IS stuff
-var options =
-{
-    client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
-    redirect_uri: "https://localhost/notifusion/index.html",
-    response_type: 'code',
-    client_secret: 'ReFbmkmPWq'
-};
-var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
-var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
-
 const electron = require('electron');
 
 // Module to control application life.
@@ -36,6 +25,17 @@ const db = low('db.json', { storage });
 // be closed automatically when the JavaScript object is garbage collected.
 let authWindow;
 
+// IS oAuth stuff
+var options =
+{
+    client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
+    redirect_uri: "https://localhost/notifusion/index.html",
+    response_type: 'code',
+    client_secret: 'ReFbmkmPWq'
+};
+var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
+var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
+
 function oAuthTokenRequest()
 {
     // make the auth window
@@ -48,35 +48,19 @@ function oAuthTokenRequest()
         }
     });
 
-    // oAuth stuff
-    var options =
-    {
-        client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
-        redirect_uri: "http://localhost/notifusion/index.html",
-        response_type: 'code',
-        client_secret: 'ReFbmkmPWq'
-    };
-    var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
-    var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
-
-
-    // listen for the access token
-    authWindow.webContents.on('did-get-redirect-request', function (event, arg)
-    {
-      console.log(event);
-      console.log(arg);
-    });
-
+    // call the handleCallback function
     authWindow.webContents.on('will-navigate', function (event, url)
     {
       handleCallback(url);
     });
 
+    // call the handleCallback function
     authWindow.webContents.on('did-get-redirect-request', function (event, url)
     {
       handleCallback(url);
     });
 
+    // open the IS auth page
     authWindow.loadURL(authUrl);
 }
 
@@ -87,15 +71,12 @@ function handleCallback (url)
   var error = /\?error=(.+)$/.exec(url);
 
   if (code || error) {
-      // Close the browser if code found or error
-      console.log('code or error');
       authWindow.destroy();
   }
 
   // If there is a code, proceed to get token from IS
   if (code) {
       console.log(code);
-      console.log(options.client_id);
       console.log('get an access token, ya big dummy!');
 
     // send a post to request the access_token
@@ -113,35 +94,23 @@ function handleCallback (url)
         {
             if (!error && response.statusCode == 200)
             {
-               var json = body;
-               var parsed = JSON.parse(json);
+                var json = body;
+                var parsed = JSON.parse(json);
 
-               var date = new Date();
-               var expires_at = (date + 86400) / 1000; // this is wrong
+                var date = new Date();
 
-               var timestamp = ({
-                 year: date.getFullYear(),
-                 month: date.getMonth()+1,
-                 day : date.getDate(),
-                 time: date.toTimeString().split(' ')[0],
-                 minute: date.getMinutes(),
-                 second: date.getSeconds()
+                var epochTime = date.getTime();
 
-               })
-               console.log(timestamp);
-
-               // TODO validate / sanatize information before push
                db('access_token').push({
                    access_token: parsed.access_token,
                    token_type: parsed.token_type,
                    refresh_token: parsed.refresh_token,
                    expires_in: parsed.expires_in,
-                  //  expaires_at: expires_at,
-                   created: timestamp,
-                   hasExpired: false
+                   scope: parsed.scope,
+                   created: epochTime,
                });
 
-               console.log(db('access_token').__wrapper__[0].refresh_token);
+            //    console.log(db('access_token').__wrapped__[0].refresh_token);
             }
 
             if (error)
@@ -159,6 +128,79 @@ function handleCallback (url)
       alert('Oops! Something went wrong and we couldn\'t' +
       'log you into Infusionsoft. Please try again.');
   }
+}
+
+/**
+ * deleted the access_token jsob object
+*/
+function deleteDB()
+{
+    db('access_token').remove();
+}
+
+/**
+ * returns 'true' if the token is valid, if not it fetches a new token
+*/
+function tokenVerification()
+{
+    // current time
+    var current_date = new Date();
+    var current_epoch_time = current_date.getTime();
+
+    // time the token was stored + milliseconds in 23.75 hours
+    var token_expiration_time = ((db('access_token').__wrapped__[0].created) + 85500000);
+
+    // the refresh token
+    var refresh_token = db('access_token').__wrapped__[0].refresh_token;
+
+    if(current_epoch_time >= token_expiration_time)
+    {
+        // delete the old junk
+        deleteDB();
+
+        console.log('you need a new token');
+
+        // send a post to request the new access_token object
+        request.post(
+            'https://api.infusionsoft.com/token',
+            { form: {
+                        grant_type: 'refresh_token',
+                        refresh_token: refresh_token,
+            },
+            headers: {
+                        Authorization: 'Basic ' + btoa(options.client_id + ':' + options.client_secret)
+                     }
+            },
+            function (error, response, body)
+            {
+                if (!error && response.statusCode == 200)
+                {
+                    var json = body;
+                    var parsed = JSON.parse(json);
+
+                    var date = new Date();
+
+                    var epochTime = date.getTime();
+
+                   db('access_token').push({
+                       access_token: parsed.access_token,
+                       token_type: parsed.token_type,
+                       refresh_token: parsed.refresh_token,
+                       expires_in: parsed.expires_in,
+                       scope: parsed.scope,
+                       created: epochTime,
+                   });
+                //    console.log(db('access_token').__wrapped__[0]);
+                }
+
+                if (error)
+                {
+                    console.log('somethin goofed');
+                    console.log(error);
+                }
+            }
+        );
+    }
 }
 
 // function to grab query vars

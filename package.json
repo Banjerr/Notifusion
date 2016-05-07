@@ -28,6 +28,10 @@
     "node.normalize.scss": "^3.0.3"
   },
   "dependencies": {
-    "lowdb": "^0.12.5"
+    "chart.js": "^2.1.0",
+    "express": "^4.10.2",
+    "jquery": "^2.2.3",
+    "lowdb": "^0.12.5",
+    "socket.io": "^1.4.6"
   }
 }
