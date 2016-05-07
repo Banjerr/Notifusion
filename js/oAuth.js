@@ -40,12 +40,13 @@ function oAuthTokenRequest()
 {
     // make the auth window
     authWindow = new BrowserWindow({
-        width: 960,
-        height: 960,
+        width: 360,
+        height: 440,
         'webPreferences': {
           'nodeIntegration': false,
           'webSecurity': false
-        }
+      },
+      frame: false
     });
 
     // call the handleCallback function
@@ -200,6 +201,11 @@ function tokenVerification()
                 }
             }
         );
+        return true;
+    }
+    else
+    {
+        return true;
     }
 }
 
