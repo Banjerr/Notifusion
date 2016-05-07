@@ -43,7 +43,7 @@ function oAuthTokenRequest()
         width: 960,
         height: 960,
         'webPreferences': {
-          'nodeIntegration': true,
+          'nodeIntegration': false,
           'webSecurity': false
         }
     });

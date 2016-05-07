@@ -23,5 +23,37 @@ function get_webforms()
 
                 console.log(response.body);
             }
+<<<<<<< HEAD
     );
+=======
+    });
+
+    // send a post request to the webform endpoint
+    // request.get(
+    //     'http://infusionrest.dev/public/webforms/',
+    //     { form: {
+    //             access_token: token_json.access_token,
+    //             token_type: token_json.token_type,
+    //             expires_in: token_json.expires_in,
+    //             refresh_token: token_json.refresh_token,
+    //             scope: token_json.scope
+    //         }
+    //     },
+    //     function (error, response, body)
+    //     {
+    //         if (!error && response.statusCode == 200)
+    //         {
+    //             console.log(body)
+    //         }
+    //
+    //         if (error)
+    //         {
+    //             console.log('somethin goofed');
+    //             console.log(error);
+    //         }
+    //
+    //         console.log(response);
+    //     }
+    // );
+>>>>>>> 0d9c9f12bcd2b89d4371b98e9bf4c5400240a585
 }
