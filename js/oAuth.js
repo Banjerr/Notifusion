@@ -25,6 +25,17 @@ const db = low('db.json', { storage });
 // be closed automatically when the JavaScript object is garbage collected.
 let authWindow;
 
+// IS oAuth stuff
+var options =
+{
+    client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
+    redirect_uri: "https://localhost/notifusion/index.html",
+    response_type: 'code',
+    client_secret: 'ReFbmkmPWq'
+};
+var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
+var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
+
 function oAuthTokenRequest()
 {
     // make the auth window
@@ -36,17 +47,6 @@ function oAuthTokenRequest()
           'webSecurity': false
         }
     });
-
-    // IS oAuth stuff
-    var options =
-    {
-        client_id: 'zjdmn6jek8xd5v6yz9eptc8m',
-        redirect_uri: "https://localhost/notifusion/index.html",
-        response_type: 'code',
-        client_secret: 'ReFbmkmPWq'
-    };
-    var isUrl = 'https://signin.infusionsoft.com/app/oauth/authorize?';
-    var authUrl = isUrl + 'client_id=' + options.client_id + '&redirect_uri=' + options.redirect_uri + '&response_type=' + options.response_type;
 
     // call the handleCallback function
     authWindow.webContents.on('will-navigate', function (event, url)
@@ -98,29 +98,19 @@ function handleCallback (url)
                 var parsed = JSON.parse(json);
 
                 var date = new Date();
-                var expires_at = (date + 86400) / 1000; // this is wrong
 
-                var timestamp = ({
-                 year: date.getFullYear(),
-                 month: date.getMonth()+1,
-                 day : date.getDate(),
-                 time: date.toTimeString().split(' ')[0],
-                 minute: date.getMinutes(),
-                 second: date.getSeconds()
-                });
+                var epochTime = date.getTime();
 
-               // TODO validate / sanatize information before push
                db('access_token').push({
                    access_token: parsed.access_token,
                    token_type: parsed.token_type,
                    refresh_token: parsed.refresh_token,
                    expires_in: parsed.expires_in,
                    scope: parsed.scope,
-                   created: timestamp,
-                   hasExpired: false
+                   created: epochTime,
                });
 
-               console.log(db('access_token').__wrapped__[0].refresh_token);
+            //    console.log(db('access_token').__wrapped__[0].refresh_token);
             }
 
             if (error)
@@ -141,22 +131,76 @@ function handleCallback (url)
 }
 
 /**
+ * deleted the access_token jsob object
+*/
+function deleteDB()
+{
+    db('access_token').remove();
+}
+
+/**
  * returns 'true' if the token is valid, if not it fetches a new token
 */
 function tokenVerification()
 {
     // current time
     var current_date = new Date();
-    var timestamp = ({
-     year: current_date.getFullYear(),
-     month: current_date.getMonth()+1,
-     day : current_date.getDate(),
-     time: current_date.toTimeString().split(' ')[0],
-     minute: current_date.getMinutes(),
-     second: current_date.getSeconds()
-    });
-    console.log('timestamp ' + timestamp.year);
-    console.log('token_date ' + db('access_token').__wrapped__[0].created.year)
+    var current_epoch_time = current_date.getTime();
+
+    // time the token was stored + milliseconds in 23.75 hours
+    var token_expiration_time = ((db('access_token').__wrapped__[0].created) + 85500000);
+
+    // the refresh token
+    var refresh_token = db('access_token').__wrapped__[0].refresh_token;
+
+    if(current_epoch_time >= token_expiration_time)
+    {
+        // delete the old junk
+        deleteDB();
+
+        console.log('you need a new token');
+
+        // send a post to request the new access_token object
+        request.post(
+            'https://api.infusionsoft.com/token',
+            { form: {
+                        grant_type: 'refresh_token',
+                        refresh_token: refresh_token,
+            },
+            headers: {
+                        Authorization: 'Basic ' + btoa(options.client_id + ':' + options.client_secret)
+                     }
+            },
+            function (error, response, body)
+            {
+                if (!error && response.statusCode == 200)
+                {
+                    var json = body;
+                    var parsed = JSON.parse(json);
+
+                    var date = new Date();
+
+                    var epochTime = date.getTime();
+
+                   db('access_token').push({
+                       access_token: parsed.access_token,
+                       token_type: parsed.token_type,
+                       refresh_token: parsed.refresh_token,
+                       expires_in: parsed.expires_in,
+                       scope: parsed.scope,
+                       created: epochTime,
+                   });
+                //    console.log(db('access_token').__wrapped__[0]);
+                }
+
+                if (error)
+                {
+                    console.log('somethin goofed');
+                    console.log(error);
+                }
+            }
+        );
+    }
 }
 
 // function to grab query vars
