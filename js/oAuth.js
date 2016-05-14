@@ -149,6 +149,7 @@ function tokenVerification()
     var current_epoch_time = current_date.getTime();
 
     // time the token was stored + milliseconds in 23.75 hours
+    // TODO should be plus, minus for testing
     var token_expiration_time = ((db('access_token').__wrapped__[0].created) + 85500000);
 
     // the refresh token
@@ -191,7 +192,6 @@ function tokenVerification()
                        scope: parsed.scope,
                        created: epochTime,
                    });
-                //    console.log(db('access_token').__wrapped__[0]);
                 }
 
                 if (error)
@@ -205,18 +205,27 @@ function tokenVerification()
     }
     else
     {
-        return true;
+        // TODO figure out better way of removing this btn
+        var authorize_btn = document.getElementsByClassName('authorizeMe');
+        return false;
     }
 }
 
-// function to grab query vars
-function getQueryVariable(variable)
-{
-   var query = window.location.search.substring(1);
-   var vars = query.split("&");
-   for (var i=0;i<vars.length;i++) {
-           var pair = vars[i].split("=");
-           if(pair[0] == variable){return pair[1];}
-   }
-   return(false);
-}
+jQuery(function(){
+    // check if there is currently a token saved in the db
+    function token_check()
+    {
+        if(db('access_token').__wrapped__[0])
+        {
+            var authorize_btn = jQuery('.authorizeMe');
+            authorize_btn.remove();
+            return true;
+        }
+    }
+
+    if(tokenVerification() === false)
+    {
+        token_check();
+    }
+    // token_check();
+});
