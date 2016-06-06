@@ -1,7 +1,7 @@
 'use strict'
 
 // function to pull back all active webforms
-function get_webforms()
+var get_webforms = function()
 {
     // grab the access_token object from the db
     var access_token = db('access_token').__wrapped__[0];
@@ -29,7 +29,7 @@ function get_webforms()
 }
 
 // function to show all active webforms
-function show_webforms()
+var show_webforms = function()
 {
 
 }

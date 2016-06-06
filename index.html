@@ -13,11 +13,15 @@
 
     <article class="authorizeMe">
         <button class="hvr-radial-in" onclick="oAuthTokenRequest();">Authorize</button>
-    </article>
+    </article><!-- .authorizeMe -->
 
     <article class="retrieveWebforms">
         <button class="hvr-radial-in" onclick="get_webforms();">Retrieve Webforms</button>
-    </article>
+    </article><!-- .retrieveWebforms -->
+
+    <article class="retrieveTasks">
+        <button class="hvr-radial-in" onclick="retrieveTasks();">Retrieve Tasks</button>
+    </article><!-- .retrieveTasks -->
 
     <!-- <button onclick="tokenVerification();">current time</button>
     <button onclick="deleteDB();">delete db</button> -->
@@ -26,6 +30,7 @@
         <script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
         <script src="js/oAuth.js"></script>
         <script src="js/webforms.js"></script>
+        <script src="js/tasks.js"></script>
         <!-- <script src="/socket.io/socket.io.js"></script>
         <script>
           var socket = io();
