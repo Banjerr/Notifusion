@@ -80,9 +80,9 @@ header {
 /*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
  /* INTERFACE  *
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-.authorizeMe, .retrieveWebforms {
+.authorizeMe, .retrieveWebforms, .retrieveTasks {
   text-align: center; }
-  .authorizeMe button, .retrieveWebforms button {
+  .authorizeMe button, .retrieveWebforms button, .retrieveTasks button {
     display: inline-block;
     text-align: center;
     padding: 2%;
@@ -93,5 +93,5 @@ header {
     background: #00BAF7;
     color: #ffffff;
     transition: all .2s linear; }
-    .authorizeMe button:hover, .retrieveWebforms button:hover {
+    .authorizeMe button:hover, .retrieveWebforms button:hover, .retrieveTasks button:hover {
       box-shadow: 0 0 12px #919291; }
