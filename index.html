@@ -12,16 +12,46 @@
         <h1 class="title"><span>Noti</span>fusion</h1>
     </header>
 
+    <md-fab-toolbar md-open="demo.isOpen" count="demo.count"
+                  md-direction="{{demo.selectedDirection}}">
+    <md-fab-trigger class="align-with-text">
+      <md-button aria-label="menu" class="md-fab md-primary">
+        <!-- <md-icon md-svg-src="img/icons/menu.svg"></md-icon> --><p>
+            button
+        </p>
+      </md-button>
+    </md-fab-trigger>
+    <md-toolbar>
+      <md-fab-actions class="md-toolbar-tools">
+        <md-button aria-label="comment" class="md-icon-button">
+          <!-- <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon> --><p>
+              button
+          </p>
+        </md-button>
+        <md-button aria-label="label" class="md-icon-button">
+          <!-- <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon> --><p>
+              button
+          </p>
+        </md-button>
+        <md-button aria-label="photo" class="md-icon-button">
+          <!-- <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon> --><p>
+              button
+          </p>
+        </md-button>
+      </md-fab-actions>
+    </md-toolbar>
+  </md-fab-toolbar>
+
     <article class="authorizeMe">
-        <button class="hvr-radial-in" onclick="oAuthTokenRequest();">Authorize</button>
+        <md-button class="md-accent md-raised md-hue-1" onclick="oAuthTokenRequest();">Authorize</md-button>
     </article><!-- .authorizeMe -->
 
     <article class="retrieveWebforms">
-        <button class="hvr-radial-in" onclick="get_webforms();">Retrieve Webforms</button>
+        <md-button class="md-accent md-raised md-hue-1" onclick="get_webforms();">Retrieve Webforms</md-button>
     </article><!-- .retrieveWebforms -->
 
     <article class="retrieveTasks" ng-controller="TaskListController">
-        <button class="hvr-radial-in" ng-click="retrieveTasks()">Retrieve Tasks</button>
+        <md-button class="md-accent md-raised md-hue-1" ng-click="retrieveTasks()">Retrieve Tasks</md-button>
     </article><!-- .retrieveTasks -->
 
     <!-- <button onclick="tokenVerification();">current time</button>

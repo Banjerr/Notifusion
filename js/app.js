@@ -4,7 +4,11 @@
 const task_db = low('tasks.json', { storage });
 
 // Define the `notifusion` module
-var notifusionApp = angular.module('notifusionApp', ['ngMaterial']);
+var notifusionApp = angular.module('notifusionApp', ['ngMaterial']).config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default').dark()
+    .primaryPalette('lime', {'default':'900'})
+    .accentPalette('yellow', {'default':'500'});
+});
 
 // Task controller
 notifusionApp.controller('TaskListController', function TaskListController($scope) {
