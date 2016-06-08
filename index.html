@@ -52,6 +52,12 @@
 
     <article class="retrieveTasks" ng-controller="TaskListController">
         <md-button class="md-accent md-raised md-hue-1" ng-click="retrieveTasks()">Retrieve Tasks</md-button>
+
+        <md-button class="md-accent md-raised md-hue-1" ng-click="tasks_from_db()">Get Saved Tasks</md-button>
+
+        <ul>
+            <li ng-repeat="task in tasks">{{ task.title }}</li>
+        </ul>
     </article><!-- .retrieveTasks -->
 
     <!-- <button onclick="tokenVerification();">current time</button>

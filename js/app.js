@@ -13,7 +13,6 @@ var notifusionApp = angular.module('notifusionApp', ['ngMaterial']).config(funct
 // Task controller
 notifusionApp.controller('TaskListController', function TaskListController($scope) {
   $scope.retrieveTasks = function(){
-      // TODO make this into form with cool angular data-binding stuff
       var since_date = '2015-01-01T17:00:00.000Z';
       var until_date = '2017-01-01T17:00:00.00Z';
       var limit_results = '100';
@@ -52,7 +51,7 @@ notifusionApp.controller('TaskListController', function TaskListController($scop
 
   // save tasks to db until they're cleared
   $scope.save_tasks = function(tasks){
-      // save those tasks to the tasks.json file
+      // loop through all and save those tasks to the tasks.json file
       for ( var i = 0; i < tasks.length; i++) {
           //console.log(tasks[i].title);
           task_db('tasks').push({
@@ -81,5 +80,17 @@ notifusionApp.controller('TaskListController', function TaskListController($scop
   // delete all saved tasks
   $scope.delete_tasks = function(){
       task_db('tasks').remove();
+  }
+
+  // get the saved tasks from the db
+  $scope.tasks_from_db = function(){
+      var has_saved_tasks = task_db.read();
+      var tasks_list = task_db('tasks').__wrapped__;
+      if(has_saved_tasks.length > 0){
+          console.log(tasks_list);
+          $scope.tasks = tasks_list;
+      } else {
+          return 'You have no tasks; go git some!'
+      }
   }
 });
