@@ -55,9 +55,12 @@
 
         <md-button class="md-accent md-raised md-hue-1" ng-click="tasks_from_db()">Get Saved Tasks</md-button>
 
-        <ul>
-            <li ng-repeat="task in tasks">{{ task.title }}</li>
-        </ul>
+        <md-list>
+            <md-list-item class="md-2-line" ng-repeat="task in tasks">
+                {{ task.title }}
+                <md-checkbox role="checkbox"></md-checkbox>
+            </md-list-item>
+        </md-list>
     </article><!-- .retrieveTasks -->
 
     <!-- <button onclick="tokenVerification();">current time</button>
