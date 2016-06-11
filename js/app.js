@@ -11,10 +11,14 @@ var notifusionApp = angular.module('notifusionApp', ['ngMaterial']).config(funct
 });
 
 // Task controller
-notifusionApp.controller('TaskListController', function TaskListController($scope) {
+notifusionApp.controller('TaskListController', ['$scope', function ($scope) {
+  $scope.task_input = {};
+
   $scope.retrieveTasks = function(){
-      var since_date = '2015-01-01T17:00:00.000Z';
-      var until_date = '2017-01-01T17:00:00.00Z';
+      var since_date_before = $scope.task_input.since_date;
+      var since_date = since_date_before.toISOString();
+      var until_date_before = $scope.task_input.until_date ;
+      var until_date = until_date_before.toISOString();
       var limit_results = '100';
       var offset_results = '0';
       var order_by = 'priority';
@@ -93,4 +97,4 @@ notifusionApp.controller('TaskListController', function TaskListController($scop
           return 'You have no tasks; go git some!'
       }
   }
-});
+}]);

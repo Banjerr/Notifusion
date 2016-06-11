@@ -16,27 +16,19 @@
                   md-direction="{{demo.selectedDirection}}">
     <md-fab-trigger class="align-with-text">
       <md-button aria-label="menu" class="md-fab md-primary">
-        <!-- <md-icon md-svg-src="img/icons/menu.svg"></md-icon> --><p>
-            button
-        </p>
+        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
       </md-button>
     </md-fab-trigger>
     <md-toolbar>
       <md-fab-actions class="md-toolbar-tools">
         <md-button aria-label="comment" class="md-icon-button">
-          <!-- <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon> --><p>
-              button
-          </p>
+          <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
         </md-button>
         <md-button aria-label="label" class="md-icon-button">
-          <!-- <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon> --><p>
-              button
-          </p>
+          <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
         </md-button>
         <md-button aria-label="photo" class="md-icon-button">
-          <!-- <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon> --><p>
-              button
-          </p>
+          <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
         </md-button>
       </md-fab-actions>
     </md-toolbar>
@@ -51,10 +43,14 @@
     </article><!-- .retrieveWebforms -->
 
     <article class="retrieveTasks" ng-controller="TaskListController">
-        <md-button class="md-accent md-raised md-hue-1" ng-click="retrieveTasks()">Retrieve Tasks</md-button>
+        <md-datepicker ng-model="task_input.since_date" md-placeholder="Enter Start Date"></md-datepicker>
+
+        <md-datepicker ng-model="task_input.until_date" md-placeholder="Enter End Date"></md-datepicker>
+
+        <md-button class="md-accent md-raised md-hue-1" ng-click="retrieveTasks(input)">Retrieve Tasks</md-button>
 
         <md-button class="md-accent md-raised md-hue-1" ng-click="tasks_from_db()">Get Saved Tasks</md-button>
-
+        
         <md-list>
             <md-list-item class="md-2-line" ng-repeat="task in tasks">
                 {{ task.title }}
