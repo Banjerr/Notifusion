@@ -8,79 +8,105 @@
     <link rel="stylesheet" href="assets/styles/style.css">
   </head>
   <body>
-    <header>
-        <h1 class="title"><span>Noti</span>fusion</h1>
-    </header>
+    <md-content>
+        <header>
+            <h1 class="title"><span>Noti</span>fusion</h1>
+        </header>
 
-    <md-fab-toolbar md-open="demo.isOpen" count="demo.count"
-                  md-direction="{{demo.selectedDirection}}">
-    <md-fab-trigger class="align-with-text">
-      <md-button aria-label="menu" class="md-fab md-primary">
-        <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
-      </md-button>
-    </md-fab-trigger>
-    <md-toolbar>
-      <md-fab-actions class="md-toolbar-tools">
-        <md-button aria-label="comment" class="md-icon-button">
-          <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
-        </md-button>
-        <md-button aria-label="label" class="md-icon-button">
-          <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
-        </md-button>
-        <md-button aria-label="photo" class="md-icon-button">
-          <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
-        </md-button>
-      </md-fab-actions>
-    </md-toolbar>
-  </md-fab-toolbar>
+        <md-fab-toolbar md-open="demo.isOpen" count="demo.count"
+                      md-direction="{{demo.selectedDirection}}">
+        <md-fab-trigger class="align-with-text">
+          <md-button aria-label="menu" class="md-fab md-primary">
+            <md-icon md-svg-src="img/icons/menu.svg"></md-icon>
+          </md-button>
+        </md-fab-trigger>
+        <md-toolbar>
+          <md-fab-actions class="md-toolbar-tools">
+            <md-button aria-label="comment" class="md-icon-button">
+              <md-icon md-svg-src="img/icons/ic_comment_24px.svg"></md-icon>
+            </md-button>
+            <md-button aria-label="label" class="md-icon-button">
+              <md-icon md-svg-src="img/icons/ic_label_24px.svg"></md-icon>
+            </md-button>
+            <md-button aria-label="photo" class="md-icon-button">
+              <md-icon md-svg-src="img/icons/ic_photo_24px.svg"></md-icon>
+            </md-button>
+          </md-fab-actions>
+        </md-toolbar>
+      </md-fab-toolbar>
 
-    <article class="authorizeMe">
-        <md-button class="md-accent md-raised md-hue-1" onclick="oAuthTokenRequest();">Authorize</md-button>
-    </article><!-- .authorizeMe -->
+        <article class="authorizeMe">
+            <md-button class="md-accent md-raised md-hue-1" onclick="oAuthTokenRequest();">Authorize</md-button>
+        </article><!-- .authorizeMe -->
 
-    <article class="retrieveWebforms">
-        <md-button class="md-accent md-raised md-hue-1" onclick="get_webforms();">Retrieve Webforms</md-button>
-    </article><!-- .retrieveWebforms -->
+        <article class="retrieveWebforms">
+            <md-button class="md-accent md-raised md-hue-1" onclick="get_webforms();">Retrieve Webforms</md-button>
+        </article><!-- .retrieveWebforms -->
 
-    <article class="retrieveTasks" ng-controller="TaskListController">
-        <md-datepicker ng-model="task_input.since_date" md-placeholder="Enter Start Date"></md-datepicker>
+        <article class="retrieveTasks" ng-controller="TaskListController">
+            <form name="task_sync" class="task_sync">
+                <md-datepicker required="required" ng-model="task_input.since_date" md-placeholder="Enter Start Date"></md-datepicker>
+                <div ng-messages="task_sync.task_input_since_date.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
 
-        <md-datepicker ng-model="task_input.until_date" md-placeholder="Enter End Date"></md-datepicker>
+                <md-datepicker required="required" ng-model="task_input.until_date" md-placeholder="Enter End Date"></md-datepicker>
 
-        <md-button class="md-accent md-raised md-hue-1" ng-click="retrieveTasks(input)">Retrieve Tasks</md-button>
+                <md-slider-container>
+                  <md-icon md-svg-icon="device:brightness-low"></md-icon>
+                  <md-slider ng-model="task_input.limit_results" aria-label="Limit Results" flex md-discrete ng-readonly="readonly"></md-slider>
+                  <md-input-container>
+                    <input required="required" ng-model="task_input.limit_results" flex type="number" aria-label="green" aria-controls="green-slider">
+                  </md-input-container>
+                </md-slider-container>
 
-        <md-button class="md-accent md-raised md-hue-1" ng-click="tasks_from_db()">Get Saved Tasks</md-button>
-        
-        <md-list>
-            <md-list-item class="md-2-line" ng-repeat="task in tasks">
-                {{ task.title }}
-                <md-checkbox role="checkbox"></md-checkbox>
-            </md-list-item>
-        </md-list>
-    </article><!-- .retrieveTasks -->
+                <md-checkbox required="required"
+                  ng-model="task_input.show_completed"
+                  aria-label="Show Completed"
+                  ng-true-value="'yup'"
+                  ng-false-value="'nope'"
+                  class="md-warn" flex>
+                  Show completed?  <br/>
+                  {{ task_input.show_completed }}
+                </md-checkbox>
 
-    <!-- <button onclick="tokenVerification();">current time</button>
-    <button onclick="deleteDB();">delete db</button> -->
+                <md-button type="submit" aria-label="green" class="md-accent md-raised md-hue-1" ng-click="syncTasks(input)">Retrieve Tasks</md-button>
+            </form>
 
-    <footer>
-        <!-- weird way to include jQuery, which i probably wont use -->
-        <script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+            <md-button aria-label="green" class="md-accent md-raised md-hue-1" ng-click="tasks_from_db()">Get Saved Tasks</md-button>
 
-        <!-- angular stuff -->
-        <script src="node_modules/angular/angular.js"></script>
-        <script src="node_modules/angular-route/angular-route.js"></script>
-        <script src="node_modules/angular-animate/angular-animate.js"></script>
-        <script src="node_modules/angular-aria/angular-aria.js"></script>
-        <script src="node_modules/angular-material/angular-material.js"></script>
+            <md-list>
+                <md-list-item aria-label="green" class="md-2-line" ng-repeat="task in tasks">
+                    {{ task.title }}
+                    <md-checkbox aria-label="green" role="checkbox"></md-checkbox>
+                </md-list-item>
+            </md-list>
+        </article><!-- .retrieveTasks -->
 
-        <!-- app stuff -->
-        <script src="js/oAuth.js"></script>
-        <script src="js/webforms.js"></script>
-        <script src="js/app.js"></script>
-        <!-- <script src="/socket.io/socket.io.js"></script>
-        <script>
-          var socket = io();
-        </script> -->
-    </footer>
+        <!-- <button onclick="tokenVerification();">current time</button>
+        <button onclick="deleteDB();">delete db</button> -->
+
+        <footer>
+            <!-- weird way to include jQuery, which i probably wont use -->
+            <script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+
+            <!-- angular stuff -->
+            <script src="node_modules/angular/angular.js"></script>
+            <script src="node_modules/angular-route/angular-route.js"></script>
+            <script src="node_modules/angular-animate/angular-animate.js"></script>
+            <script src="node_modules/angular-aria/angular-aria.js"></script>
+            <script src="node_modules/angular-material/angular-material.js"></script>
+            <script src="node_modules/angular-messages/angular-messages.js"></script>
+
+            <!-- app stuff -->
+            <script src="js/oAuth.js"></script>
+            <script src="js/webforms.js"></script>
+            <script src="js/app.js"></script>
+            <!-- <script src="/socket.io/socket.io.js"></script>
+            <script>
+              var socket = io();
+            </script> -->
+        </footer>
+    </md-content>
   </body>
 </html>

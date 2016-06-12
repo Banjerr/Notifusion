@@ -4,7 +4,7 @@
 const task_db = low('tasks.json', { storage });
 
 // Define the `notifusion` module
-var notifusionApp = angular.module('notifusionApp', ['ngMaterial']).config(function($mdThemingProvider) {
+var notifusionApp = angular.module('notifusionApp', ['ngMaterial', 'ngMessages']).config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default').dark()
     .primaryPalette('lime', {'default':'900'})
     .accentPalette('yellow', {'default':'500'});
@@ -14,19 +14,25 @@ var notifusionApp = angular.module('notifusionApp', ['ngMaterial']).config(funct
 notifusionApp.controller('TaskListController', ['$scope', function ($scope) {
   $scope.task_input = {};
 
-  $scope.retrieveTasks = function(){
+  $scope.syncTasks = function(){
       var since_date_before = $scope.task_input.since_date;
       var since_date = since_date_before.toISOString();
       var until_date_before = $scope.task_input.until_date ;
       var until_date = until_date_before.toISOString();
-      var limit_results = '100';
+      var limit_results = $scope.task_input.limit_results;
       var offset_results = '0';
       var order_by = 'priority';
-      var show_completed = 'true';
+      if($scope.task_input.show_completed === 'yup'){
+        var show_completed = 'true';
+      } else {
+        var show_completed = 'false';
+      }
       var has_due_date = 'true';
-
       // grab the access_token object from the db
       var access_token = db('access_token').__wrapped__[0];
+
+      // delete tasks and start fresh
+      $scope.delete_tasks();
 
       // make a get request to the ghetto api endpoint
       request.get({
@@ -90,7 +96,7 @@ notifusionApp.controller('TaskListController', ['$scope', function ($scope) {
   $scope.tasks_from_db = function(){
       var has_saved_tasks = task_db.read();
       var tasks_list = task_db('tasks').__wrapped__;
-      if(has_saved_tasks.length > 0){
+      if(has_saved_tasks){
           console.log(tasks_list);
           $scope.tasks = tasks_list;
       } else {
