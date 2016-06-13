@@ -6,7 +6,7 @@
 
 ## Screenshots (showing the progress, no where near finished yet)
 
-![Notifusion](./images/notifusion.gif)
+![Notifusion](https://github.com/Banjerr/Notifusion/blob/master/assets/images/notifusion.gif)
 
 ### Made with Electron, Node.js and Angular.js
 
