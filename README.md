@@ -6,7 +6,7 @@
 
 ## Screenshots (showing the progress, no where near finished yet)
 
-![Notifusion Progress Screen Shot](https://dl.dropboxusercontent.com/s/g0s0sj6uvzjmksc/3E40B5BD-6E97-44E7-837C-2136412DC9EB-995-00003FE2C10B9C36.gif?dl=0)
+![Notifusion Progress](https://dl.dropboxusercontent.com/s/g0s0sj6uvzjmksc/3E40B5BD-6E97-44E7-837C-2136412DC9EB-995-00003FE2C10B9C36.gif?dl=0)
 
 ### Made with Electron, Node.js and Angular.js
 
