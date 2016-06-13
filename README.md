@@ -13,3 +13,7 @@
 ### Contributing
 
 Feel free to fork this repo, make a new feature branch, and make a pull request if you'd like to contribute. Also feel free to report any bugs or request any improvements/features/etc.
+
+### Thoughts for features
+
+ - adding some native "reminder" notifications for tasks/appointments
