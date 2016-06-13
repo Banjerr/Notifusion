@@ -10,8 +10,8 @@ const electron = require('electron');
 const app = electron.app;
 
 // Modules to create native browser window.
-var remote = require('remote');
-var BrowserWindow = remote.require('browser-window');
+var remote = electron.remote;
+const BrowserWindow = remote.BrowserWindow;
 
 // need this to build the post string for the access_token
 var request = require('request');
@@ -111,7 +111,10 @@ function handleCallback (url)
                    created: epochTime,
                });
 
-            //    console.log(db('access_token').__wrapped__[0].refresh_token);
+               // remove the authorization button cause we dont need it
+               var authorize_btn_parent = document.getElementById('authorizeMe');
+               var authorize_btn = document.getElementById('authorizeMeBtn');
+               authorize_btn_parent.removeChild(authorizeMeBtn)
             }
 
             if (error)
@@ -205,7 +208,6 @@ function tokenVerification()
     }
     else
     {
-        // TODO figure out better way of removing this btn
         var authorize_btn = document.getElementsByClassName('authorizeMe');
         return false;
     }
@@ -217,15 +219,16 @@ jQuery(function(){
     {
         if(db('access_token').__wrapped__[0])
         {
+            // make sure its still valid, if not, refresh it
+            if(tokenVerification() === false)
+            {
+                tokenVerification();
+            }
             var authorize_btn = jQuery('.authorizeMe');
             authorize_btn.remove();
             return true;
         }
     }
 
-    if(tokenVerification() === false)
-    {
-        token_check();
-    }
-    // token_check();
+    token_check();
 });

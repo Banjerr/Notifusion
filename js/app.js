@@ -13,6 +13,7 @@ var notifusionApp = angular.module('notifusionApp', ['ngMaterial', 'ngMessages']
 // Task controller
 notifusionApp.controller('TaskListController', ['$scope', function ($scope) {
   $scope.task_input = {};
+  $scope.task_input.show_completed = false;
 
   $scope.syncTasks = function(){
       var since_date_before = $scope.task_input.since_date;
