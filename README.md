@@ -2,7 +2,7 @@
 
 ## Tasks, Appointments, and Stuff... on your desktop
 
-*Notifusion* is a desktop app that will allow you to connect to your Infusionsoft app and easily, effeciently, and effectively manage your tasks, appointments, and stuff. 
+*Notifusion* is a desktop app that will allow you to connect to your Infusionsoft app and easily, effeciently, and effectively manage your tasks, appointments, and stuff. Infusionsoft's REST API is super limited, currently (unfortunately)
 
 ## Screenshots (showing the progress, no where near finished yet)
 
