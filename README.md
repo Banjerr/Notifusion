@@ -1,6 +1,6 @@
 # Notifusion
 
-## Tasks, Appointments, and Stuff... on your desktop
+## Tasks, Appointments, and Stuff... on your... screen? I dunno... I'm grasping at straws here. I just want a t-shirt. 
 
 *Notifusion* is a desktop app that will allow you to connect to your Infusionsoft app and easily, effeciently, and effectively manage your tasks, appointments, and stuff. Infusionsoft's REST API is super limited, currently (unfortunately)
 
